@@ -33,7 +33,23 @@ body {
   font-size: 16px;
   font-weight: bold;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
+.sidebar-toggle {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  flex-shrink: 0;
+  opacity: 0.85;
+  transition: opacity 0.15s;
+}
+.sidebar-toggle:hover { opacity: 1; }
 .layout { display: flex; flex: 1; }
 .sidebar {
   width: 220px;
@@ -44,7 +60,19 @@ body {
   top: 0;
   height: calc(100vh - 48px);
   overflow-y: auto;
+  overflow-x: hidden;
+  transition: width 0.25s ease;
 }
+.sidebar.sidebar--hidden { width: 0; overflow: hidden; }
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 99;
+  cursor: pointer;
+}
+.sidebar-backdrop.active { display: block; }
 .sidebar-section-title {
   font-size: 10px;
   text-transform: uppercase;
@@ -143,6 +171,42 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
 .faq-a { font-size: 14px; line-height: 1.7; color: var(--text); }
 .checklist-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; }
 .checklist-box { width: 18px; height: 18px; border: 2px solid var(--accent); border-radius: 3px; flex-shrink: 0; margin-top: 2px; }
+.sidebar-module { cursor: pointer; user-select: none; }
+.module-chevron {
+  font-size: 10px;
+  transition: transform 0.2s ease;
+  color: var(--sidebar-muted);
+  margin-left: auto;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.sidebar-group.collapsed .module-chevron { transform: rotate(-90deg); }
+.sidebar-group-links {
+  overflow: hidden;
+  max-height: 300px;
+  transition: max-height 0.25s ease;
+}
+.sidebar-group.collapsed .sidebar-group-links { max-height: 0; }
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 48px;
+    left: 0;
+    z-index: 100;
+    height: calc(100vh - 48px);
+    width: 220px !important;
+    transition: transform 0.25s ease !important;
+    transform: translateX(0);
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+  }
+  .sidebar.sidebar--hidden {
+    width: 220px !important;
+    overflow: auto !important;
+    transform: translateX(-220px);
+  }
+  .main-content { padding: 24px 20px; }
+}
 @media print {
   .site-header, .sidebar, .nav-buttons, .breadcrumb { display: none !important; }
   .layout { display: block; }
@@ -155,39 +219,64 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
 </head>
 <body>
 
-<header class="site-header">📚 自僱IT顧問記帳課程</header>
+<header class="site-header">
+  <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Toggle menu">☰</button>
+  📚 自僱IT顧問記帳課程
+</header>
+
+<div class="sidebar-backdrop" id="sidebar-backdrop" onclick="toggleSidebar()"></div>
 
 <div class="layout">
   <nav class="sidebar">
     <div class="sidebar-section-title">課程目錄</div>
 
-    <div class="sidebar-module">📖 基礎概念</div>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('basics-what')">什麼是記帳？</a>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('basics-why')">為什麼要記帳？</a>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('basics-t2125')">T2125報稅表簡介</a>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('basics-role')">你的角色</a>
+    <div class="sidebar-group">
+      <div class="sidebar-module" onclick="toggleGroup(this)">📖 基礎概念<span class="module-chevron">▾</span></div>
+      <div class="sidebar-group-links">
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('basics-what')">什麼是記帳？</a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('basics-why')">為什麼要記帳？</a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('basics-t2125')">T2125報稅表簡介</a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('basics-role')">你的角色</a>
+      </div>
+    </div>
 
-    <div class="sidebar-module">💰 收入記錄</div>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-what')">什麼是發票？</a>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-hst')">HST增值稅</a>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-fx')">美元轉加元</a>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-fields')">每個欄位說明</a>
+    <div class="sidebar-group">
+      <div class="sidebar-module" onclick="toggleGroup(this)">💰 收入記錄<span class="module-chevron">▾</span></div>
+      <div class="sidebar-group-links">
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-what')">什麼是發票？</a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-hst')">HST增值稅</a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-fx')">美元轉加元</a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-fields')">每個欄位說明</a>
+      </div>
+    </div>
 
-    <div class="sidebar-module">🧾 支出記錄</div>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-deductible')">哪些支出可扣稅？</a>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-pct')">業務用途百分比</a>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-categories')">支出類別列表</a>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-fields')">每個欄位說明</a>
+    <div class="sidebar-group">
+      <div class="sidebar-module" onclick="toggleGroup(this)">🧾 支出記錄<span class="module-chevron">▾</span></div>
+      <div class="sidebar-group-links">
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-deductible')">哪些支出可扣稅？</a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-pct')">業務用途百分比</a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-categories')">支出類別列表</a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-fields')">每個欄位說明</a>
+      </div>
+    </div>
 
-    <div class="sidebar-module">🏦 銀行交易</div>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('bank-deposit')">存款記錄</a>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('bank-conversion')">外幣兌換</a>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('bank-fields')">每個欄位說明</a>
+    <div class="sidebar-group">
+      <div class="sidebar-module" onclick="toggleGroup(this)">🏦 銀行交易<span class="module-chevron">▾</span></div>
+      <div class="sidebar-group-links">
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('bank-deposit')">存款記錄</a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('bank-conversion')">外幣兌換</a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('bank-fields')">每個欄位說明</a>
+      </div>
+    </div>
 
-    <div class="sidebar-module" style="color:#52c07a;">⚡ 快速參考</div>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('ref-categories')">支出類別速查表</a>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('ref-checklist')">每月記帳清單</a>
-    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('ref-faq')">常見問題</a>
+    <div class="sidebar-group">
+      <div class="sidebar-module" style="color:#52c07a;" onclick="toggleGroup(this)">⚡ 快速參考<span class="module-chevron">▾</span></div>
+      <div class="sidebar-group-links">
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('ref-categories')">支出類別速查表</a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('ref-checklist')">每月記帳清單</a>
+        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('ref-faq')">常見問題</a>
+      </div>
+    </div>
   </nav>
 
   <main class="main-content">
@@ -316,7 +405,7 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
     <li>客戶有沒有付款</li>
   </ul>
   <div class="callout info">
-    <strong>💡 發票由老公負責發出</strong><br>
+    <strong>💡 發票由 consultant 負責發出</strong><br>
     發票通常在每月工作完成後發給客戶。你的工作是在客戶<strong>確認付款後</strong>，把發票資料輸入系統，並更新付款狀態為「paid」。
   </div>
   <div class="callout success">
@@ -376,7 +465,7 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
   </div>
   <div class="callout warn">
     <strong>⚠️ BOC匯率在哪裡找？</strong><br>
-    系統設定（settings）裡有當前的BOC匯率。如果老公已更新，直接用系統顯示的數字即可。
+    系統設定（settings）裡有當前的BOC匯率。如果系統已更新，直接用系統顯示的數字即可。
   </div>
   <div class="nav-buttons">
     <button class="btn-prev" onclick="prevSection('income-fx')">← 上一節</button>
@@ -436,7 +525,7 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
   </div>
   <div class="callout warn">
     <strong>⚠️ 有疑問時</strong><br>
-    如果不確定某張收據是否可扣稅，先記錄下來，在備註（notes）欄寫上「待確認」，讓老公核實。
+    如果不確定某張收據是否可扣稅，先記錄下來，在備註（notes）欄寫上「待確認」，讓 consultant 核實。
   </div>
   <div class="nav-buttons">
     <button class="btn-prev" onclick="prevSection('expense-deductible')">← 上一節</button>
@@ -460,7 +549,7 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
   </div>
   <div class="callout info">
     <strong>💡 百分比如何決定？</strong><br>
-    通常由老公根據實際使用情況決定，並保持一致（每年用同樣的比例）。如果沒有特別說明，沿用慣常的百分比即可。
+    通常由 consultant 根據實際使用情況決定，並保持一致（每年用同樣的比例）。如果沒有特別說明，沿用慣常的百分比即可。
   </div>
   <div class="callout warn">
     <strong>⚠️ 完全用於工作的支出</strong><br>
@@ -488,7 +577,7 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
   </table>
   <div class="callout info">
     <strong>💡 拿不準類別？</strong><br>
-    先選最接近的類別，然後在備註（notes）欄說明，讓老公確認。⚡ 快速參考頁有可列印版本。
+    先選最接近的類別，然後在備註（notes）欄說明，讓 consultant 確認。⚡ 快速參考頁有可列印版本。
   </div>
   <div class="nav-buttons">
     <button class="btn-prev" onclick="prevSection('expense-categories')">← 上一節</button>
@@ -610,7 +699,7 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
     <tr><td><strong>Bank Charges</strong></td><td>8710</td><td>銀行服務費、國際轉帳費、帳戶管理費</td><td>100%</td></tr>
   </table>
   <div class="callout warn">
-    <strong>⚠️ 有疑問時</strong>：在備註（notes）欄寫「待確認」，讓老公核實。
+    <strong>⚠️ 有疑問時</strong>：在備註（notes）欄寫「待確認」，讓 consultant 核實。
   </div>
   <div class="nav-buttons">
     <button class="btn-prev" onclick="prevSection('ref-categories')">← 上一節</button>
@@ -631,7 +720,7 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
   <div class="checklist-item"><div class="checklist-box"></div><div>把收據存放安全（掃描或實體保存）</div></div>
 
   <h3 style="margin:16px 0 10px;color:var(--sidebar-bg)">💰 發票記錄</h3>
-  <div class="checklist-item"><div class="checklist-box"></div><div>確認本月發票是否已由老公發出</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>確認本月發票是否已由 consultant 發出</div></div>
   <div class="checklist-item"><div class="checklist-box"></div><div>輸入發票記錄，填入所有美元金額及BOC匯率</div></div>
   <div class="checklist-item"><div class="checklist-box"></div><div>客戶付款後，更新發票狀態為 paid</div></div>
 
@@ -642,7 +731,7 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
 
   <div class="callout info" style="margin-top:20px">
     <strong>💡 完成後</strong><br>
-    通知老公本月記錄已完成，讓他審閱一遍，確保無誤。
+    通知 consultant 本月記錄已完成，讓他審閱一遍，確保無誤。
   </div>
   <div class="nav-buttons">
     <button class="btn-prev" onclick="prevSection('ref-checklist')">← 上一節</button>
@@ -661,22 +750,22 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
 
   <div class="faq-item">
     <div class="faq-q">Q: 我不確定某張收據的類別，怎麼辦？</div>
-    <div class="faq-a">先填入最接近的類別，然後在備註（notes）欄寫「待確認類別」，完成後通知老公核實。不要因為不確定就跳過不輸入。</div>
+    <div class="faq-a">先填入最接近的類別，然後在備註（notes）欄寫「待確認類別」，完成後通知 consultant 核實。不要因為不確定就跳過不輸入。</div>
   </div>
 
   <div class="faq-item">
     <div class="faq-q">Q: 收據上的金額包含HST，我應該填哪個金額？</div>
-    <div class="faq-a">在支出記錄（expenses）中，total_amount 填收據上的<strong>總金額</strong>（包含HST），不需要分拆。加拿大稅局允許申請退回部分HST，這個交由老公處理。</div>
+    <div class="faq-a">在支出記錄（expenses）中，total_amount 填收據上的<strong>總金額</strong>（包含HST），不需要分拆。加拿大稅局允許申請退回部分HST，這個交由 consultant 處理。
   </div>
 
   <div class="faq-item">
     <div class="faq-q">Q: BOC匯率我去哪裡找？</div>
-    <div class="faq-a">系統設定（settings）裡有當前的BOC匯率，老公會定期更新。如果你發現匯率看起來太舊，通知老公更新即可。</div>
+    <div class="faq-a">系統設定（settings）裡有當前的BOC匯率，consultant 會定期更新。如果你發現匯率看起來太舊，通知 consultant 更新即可。</div>
   </div>
 
   <div class="faq-item">
     <div class="faq-q">Q: 如果我輸入錯了，可以更改嗎？</div>
-    <div class="faq-a">可以。在系統中找到該記錄，直接修改即可。如果不確定怎麼操作，通知老公幫忙修改。</div>
+    <div class="faq-a">可以。在系統中找到該記錄，直接修改即可。如果不確定怎麼操作，通知 consultant 幫忙修改。</div>
   </div>
 
   <div class="faq-item">
@@ -705,14 +794,51 @@ const SECTIONS = [
   'ref-categories','ref-checklist','ref-faq'
 ];
 
+function toggleGroup(moduleEl) {
+  moduleEl.parentElement.classList.toggle('collapsed');
+}
+
+function toggleSidebar() {
+  const sidebar = document.querySelector('.sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  const willHide = !sidebar.classList.contains('sidebar--hidden');
+  sidebar.classList.toggle('sidebar--hidden', willHide);
+  backdrop.classList.toggle('active', !willHide && window.innerWidth <= 768);
+}
+
 function showSection(id) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.querySelectorAll('.sidebar-link').forEach(a => {
     a.classList.toggle('active', a.getAttribute('onclick') === `showSection('${id}')`);
   });
+  const activeLink = document.querySelector(`.sidebar-link[onclick="showSection('${id}')"]`);
+  if (activeLink) {
+    const groupLinks = activeLink.closest('.sidebar-group-links');
+    if (groupLinks) groupLinks.parentElement.classList.remove('collapsed');
+  }
+  if (window.innerWidth <= 768) {
+    document.querySelector('.sidebar').classList.add('sidebar--hidden');
+    document.getElementById('sidebar-backdrop').classList.remove('active');
+  }
   window.scrollTo(0, 0);
 }
+
+function initSidebar() {
+  if (window.innerWidth <= 768) {
+    document.querySelector('.sidebar').classList.add('sidebar--hidden');
+  }
+}
+
+window.addEventListener('resize', () => {
+  const sidebar = document.querySelector('.sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  if (window.innerWidth > 768) {
+    backdrop.classList.remove('active');
+  } else if (!sidebar.classList.contains('sidebar--hidden')) {
+    backdrop.classList.add('active');
+  }
+});
 
 function nextSection(currentId) {
   const idx = SECTIONS.indexOf(currentId);
@@ -725,6 +851,7 @@ function prevSection(currentId) {
 }
 
 showSection('basics-what');
+initSidebar();
 </script>
 </body>
 </html>
