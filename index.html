@@ -302,10 +302,108 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
     <button class="btn-next" onclick="nextSection('basics-role')">下一模組：💰 收入記錄 →</button>
   </div>
 </section>
-    <section id="income-what"      class="section"><p>（內容待填）</p></section>
-    <section id="income-hst"       class="section"><p>（內容待填）</p></section>
-    <section id="income-fx"        class="section"><p>（內容待填）</p></section>
-    <section id="income-fields"    class="section"><p>（內容待填）</p></section>
+    <section id="income-what" class="section">
+  <div class="breadcrumb">收入記錄 › 什麼是發票？</div>
+  <h1>什麼是發票？</h1>
+  <div class="section-divider"></div>
+  <p>發票（Invoice）是完成工作後向客戶發出的<strong>正式收費單據</strong>。就像餐廳吃完飯收到的帳單，只是這裡是IT服務的帳單。</p>
+  <p>每張發票記錄了：</p>
+  <ul>
+    <li>這個月做了多少小時的工作</li>
+    <li>每小時的收費是多少（美元）</li>
+    <li>總收費金額（含HST）</li>
+    <li>客戶有沒有付款</li>
+  </ul>
+  <div class="callout info">
+    <strong>💡 發票由老公負責發出</strong><br>
+    發票通常在每月工作完成後發給客戶。你的工作是在客戶<strong>確認付款後</strong>，把發票資料輸入系統，並更新付款狀態為「paid」。
+  </div>
+  <div class="callout success">
+    <strong>✅ 例子</strong><br>
+    2025年8月完成了60小時工作，每小時$85美元。<br>
+    服務費 = 60 × $85 = $5,100 USD<br>
+    加上HST 13% = $5,100 × 13% = $663 USD<br>
+    發票總金額 = $5,763 USD
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('income-what')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('income-what')">下一節：HST增值稅 →</button>
+  </div>
+</section>
+    <section id="income-hst" class="section">
+  <div class="breadcrumb">收入記錄 › HST增值稅</div>
+  <h1>HST增值稅</h1>
+  <div class="section-divider"></div>
+  <p><strong>HST（Harmonized Sales Tax）</strong>是加拿大的消費稅。在安省（Ontario），稅率是<strong>13%</strong>。</p>
+  <div class="callout warn">
+    <strong>⚠️ 重要：HST不是收入</strong><br>
+    向客戶收取的HST不算是收入——它只是「代稅局收的稅」，定期需要上交給稅局（CRA）。因此在記帳時，我們分開記錄本金和HST。
+  </div>
+  <div class="callout success">
+    <strong>✅ 計算例子</strong><br>
+    服務費（本金）= $5,100 USD<br>
+    HST = $5,100 × 13% = $663 USD<br>
+    發票總額 = $5,100 + $663 = $5,763 USD<br><br>
+    在系統中分別填入：<br>
+    amount_usd = 5100 &nbsp;│&nbsp; hst_usd = 663 &nbsp;│&nbsp; total_usd = 5763
+  </div>
+  <div class="callout info">
+    <strong>💡 如果客戶不用付HST？</strong><br>
+    部分美國客戶不需要繳交加拿大HST。在這種情況下，hst_usd = 0，total_usd = amount_usd。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('income-hst')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('income-hst')">下一節：美元轉加元 →</button>
+  </div>
+</section>
+    <section id="income-fx" class="section">
+  <div class="breadcrumb">收入記錄 › 美元轉加元</div>
+  <h1>美元轉加元</h1>
+  <div class="section-divider"></div>
+  <p>客戶以<strong>美元（USD）</strong>付款，但加拿大報稅必須用<strong>加元（CAD）</strong>。所以每張發票都需要把美元金額換算成加元。</p>
+  <div class="callout info">
+    <strong>💡 為什麼用加拿大銀行匯率（BOC Rate）？</strong><br>
+    加拿大稅局規定，申報收入時必須使用加拿大銀行公布的官方匯率，而不是你實際換匯的匯率。這個匯率稱為「BOC Rate」（Bank of Canada Rate）。
+  </div>
+  <div class="callout success">
+    <strong>✅ 換算例子</strong><br>
+    發票服務費：$5,100 USD<br>
+    當月BOC匯率：1 USD = 1.3978 CAD<br>
+    換算後：$5,100 × 1.3978 = $7,128.78 CAD<br><br>
+    HST換算：$663 × 1.3978 = $926.74 CAD<br>
+    發票總額：$5,763 × 1.3978 = $8,055.52 CAD
+  </div>
+  <div class="callout warn">
+    <strong>⚠️ BOC匯率在哪裡找？</strong><br>
+    系統設定（settings）裡有當前的BOC匯率。如果老公已更新，直接用系統顯示的數字即可。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('income-fx')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('income-fx')">下一節：每個欄位說明 →</button>
+  </div>
+</section>
+    <section id="income-fields" class="section">
+  <div class="breadcrumb">收入記錄 › 每個欄位說明</div>
+  <h1>發票記錄——每個欄位說明</h1>
+  <div class="section-divider"></div>
+  <div class="field-row"><div class="field-name">invoice_number</div><div class="field-desc"><strong>發票編號</strong>——發票上的唯一編號，如 BQG-001。每張發票編號不同。</div></div>
+  <div class="field-row"><div class="field-name">invoice_date</div><div class="field-desc"><strong>發票日期</strong>——發票發出的日期，格式 YYYY-MM-DD，如 2025-08-03。</div></div>
+  <div class="field-row"><div class="field-name">hours</div><div class="field-desc"><strong>工作時數</strong>——該發票對應的工作小時數，如 60。</div></div>
+  <div class="field-row"><div class="field-name">rate_usd</div><div class="field-desc"><strong>時薪（美元）</strong>——每小時收費，如 85。</div></div>
+  <div class="field-row"><div class="field-name">amount_usd</div><div class="field-desc"><strong>服務費（美元）</strong>——hours × rate_usd，不含HST。如 60 × 85 = 5100。</div></div>
+  <div class="field-row"><div class="field-name">hst_usd</div><div class="field-desc"><strong>HST（美元）</strong>——amount_usd × 13%。如 5100 × 0.13 = 663。若客戶免HST則填0。</div></div>
+  <div class="field-row"><div class="field-name">total_usd</div><div class="field-desc"><strong>發票總額（美元）</strong>——amount_usd + hst_usd。如 5100 + 663 = 5763。</div></div>
+  <div class="field-row"><div class="field-name">boc_rate</div><div class="field-desc"><strong>BOC匯率</strong>——加拿大銀行的官方美元兌加元匯率，如 1.3978。從系統設定中取得。</div></div>
+  <div class="field-row"><div class="field-name">amount_cad</div><div class="field-desc"><strong>服務費（加元）</strong>——amount_usd × boc_rate。如 5100 × 1.3978 = 7128.78。</div></div>
+  <div class="field-row"><div class="field-name">hst_cad</div><div class="field-desc"><strong>HST（加元）</strong>——hst_usd × boc_rate。如 663 × 1.3978 = 926.74。</div></div>
+  <div class="field-row"><div class="field-name">total_cad</div><div class="field-desc"><strong>發票總額（加元）</strong>——total_usd × boc_rate。如 5763 × 1.3978 = 8055.52。</div></div>
+  <div class="field-row"><div class="field-name">status</div><div class="field-desc"><strong>付款狀態</strong>——<code>unpaid</code>（未付款）或 <code>paid</code>（已付款）。收到客戶付款後更新為 paid。</div></div>
+  <div class="field-row"><div class="field-name">notes</div><div class="field-desc"><strong>備註</strong>——可選填。如有特殊情況可在此說明。</div></div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('income-fields')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('income-fields')">下一模組：🧾 支出記錄 →</button>
+  </div>
+</section>
     <section id="expense-deductible" class="section"><p>（內容待填）</p></section>
     <section id="expense-pct"      class="section"><p>（內容待填）</p></section>
     <section id="expense-categories" class="section"><p>（內容待填）</p></section>
