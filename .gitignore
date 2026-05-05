@@ -1,3 +1,8 @@
 .superpowers/
 *.pyc
 __pycache__/
+*.db
+*.log
+.claude/
+.superpowers/
+docs/
