@@ -404,10 +404,122 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
     <button class="btn-next" onclick="nextSection('income-fields')">下一模組：🧾 支出記錄 →</button>
   </div>
 </section>
-    <section id="expense-deductible" class="section"><p>（內容待填）</p></section>
-    <section id="expense-pct"      class="section"><p>（內容待填）</p></section>
-    <section id="expense-categories" class="section"><p>（內容待填）</p></section>
-    <section id="expense-fields"   class="section"><p>（內容待填）</p></section>
+    <section id="expense-deductible" class="section">
+  <div class="breadcrumb">支出記錄 › 哪些支出可扣稅？</div>
+  <h1>哪些支出可扣稅？</h1>
+  <div class="section-divider"></div>
+  <p>並非所有開支都可以在報稅時扣除。基本原則：<strong>因為工作而產生的合理開支</strong>才可扣稅。</p>
+  <div class="grid-2">
+    <div class="card" style="border-top:3px solid #52c07a">
+      <h3 style="color:#1a5435">✅ 可扣稅的支出</h3>
+      <ul>
+        <li>家用網絡費（部分）</li>
+        <li>手機費（部分）</li>
+        <li>辦公室文具用品</li>
+        <li>軟件訂閱（如 Office 365）</li>
+        <li>專業費用（如會計師費）</li>
+        <li>工作相關交通費</li>
+        <li>家用辦公室費用（部分）</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid #e74c3c">
+      <h3 style="color:#c0392b">❌ 不可扣稅的支出</h3>
+      <ul>
+        <li>個人娛樂費用</li>
+        <li>日常食物</li>
+        <li>個人衣物</li>
+        <li>家居裝修（非辦公室）</li>
+        <li>個人旅遊費用</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout warn">
+    <strong>⚠️ 有疑問時</strong><br>
+    如果不確定某張收據是否可扣稅，先記錄下來，在備註（notes）欄寫上「待確認」，讓老公核實。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('expense-deductible')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('expense-deductible')">下一節：業務用途百分比 →</button>
+  </div>
+</section>
+    <section id="expense-pct" class="section">
+  <div class="breadcrumb">支出記錄 › 業務用途百分比</div>
+  <h1>業務用途百分比</h1>
+  <div class="section-divider"></div>
+  <p>有些開支是<strong>私用與工作共用</strong>的，例如家用寬頻——你也會用它娛樂。稅局只允許扣除「工作部分」。</p>
+  <p>「業務用途百分比」就是用來說明這筆開支有多少比例用於工作。</p>
+  <div class="callout success">
+    <strong>✅ 例子：家用寬頻</strong><br>
+    每月寬頻費：$59.89<br>
+    估計60%用於工作（辦公時間使用）<br>
+    業務用途百分比 = <strong>60%</strong><br>
+    可扣稅金額 = $59.89 × 60% = $35.93<br><br>
+    在系統中填入：<br>
+    total_amount = 59.89 &nbsp;│&nbsp; business_use_pct = 60 &nbsp;│&nbsp; deductible_amount = 35.93
+  </div>
+  <div class="callout info">
+    <strong>💡 百分比如何決定？</strong><br>
+    通常由老公根據實際使用情況決定，並保持一致（每年用同樣的比例）。如果沒有特別說明，沿用慣常的百分比即可。
+  </div>
+  <div class="callout warn">
+    <strong>⚠️ 完全用於工作的支出</strong><br>
+    如某項支出100%用於工作（如工作專用軟件訂閱），業務用途百分比 = 100，可扣稅金額 = 總金額。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('expense-pct')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('expense-pct')">下一節：支出類別列表 →</button>
+  </div>
+</section>
+    <section id="expense-categories" class="section">
+  <div class="breadcrumb">支出記錄 › 支出類別列表</div>
+  <h1>支出類別列表</h1>
+  <div class="section-divider"></div>
+  <p>輸入支出時，需要選擇正確的<strong>類別（category）</strong>和對應的<strong>T2125行號</strong>：</p>
+  <table>
+    <tr><th>類別名稱</th><th>T2125行號</th><th>常見例子</th><th>典型業務%</th></tr>
+    <tr><td><strong>Internet/Phone</strong></td><td>9220</td><td>家用寬頻費、手機月費</td><td>60%</td></tr>
+    <tr><td><strong>Office Supplies</strong></td><td>8810</td><td>文具、打印紙、墨盒</td><td>100%</td></tr>
+    <tr><td><strong>Software/Subscription</strong></td><td>9220</td><td>Office 365、雲端服務、開發工具</td><td>100%</td></tr>
+    <tr><td><strong>Professional Fees</strong></td><td>8860</td><td>會計師費、法律費用</td><td>100%</td></tr>
+    <tr><td><strong>Home Office</strong></td><td>9945</td><td>按辦公室佔家居面積比例的水電租金</td><td>視情況</td></tr>
+    <tr><td><strong>Travel</strong></td><td>9281</td><td>工作相關交通費、停車費</td><td>100%</td></tr>
+    <tr><td><strong>Bank Charges</strong></td><td>8710</td><td>銀行服務費、國際轉帳費</td><td>100%</td></tr>
+  </table>
+  <div class="callout info">
+    <strong>💡 拿不準類別？</strong><br>
+    先選最接近的類別，然後在備註（notes）欄說明，讓老公確認。⚡ 快速參考頁有可列印版本。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('expense-categories')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('expense-categories')">下一節：每個欄位說明 →</button>
+  </div>
+</section>
+    <section id="expense-fields" class="section">
+  <div class="breadcrumb">支出記錄 › 每個欄位說明</div>
+  <h1>支出記錄——每個欄位說明</h1>
+  <div class="section-divider"></div>
+  <div class="field-row"><div class="field-name">expense_date</div><div class="field-desc"><strong>收據日期</strong>——收據上的日期，格式 YYYY-MM-DD，如 2025-08-15。</div></div>
+  <div class="field-row"><div class="field-name">vendor</div><div class="field-desc"><strong>商戶名稱</strong>——收據上的公司名稱，如 Virgin Plus、Staples、Microsoft。</div></div>
+  <div class="field-row"><div class="field-name">description</div><div class="field-desc"><strong>用途描述</strong>——簡短說明這筆開支是什麼，如「八月份寬頻費」、「辦公室打印紙」。</div></div>
+  <div class="field-row"><div class="field-name">category</div><div class="field-desc"><strong>支出類別</strong>——從類別列表中選擇，如 Internet/Phone、Software/Subscription。參考上一節的類別表。</div></div>
+  <div class="field-row"><div class="field-name">t2125_line</div><div class="field-desc"><strong>T2125行號</strong>——對應類別的報稅表行號，如 9220。參考類別表，通常選完類別後會自動填入。</div></div>
+  <div class="field-row"><div class="field-name">total_amount</div><div class="field-desc"><strong>收據總金額</strong>——收據上的總金額（加元），如 59.89。</div></div>
+  <div class="field-row"><div class="field-name">business_use_pct</div><div class="field-desc"><strong>業務用途百分比</strong>——工作佔用的比例，如 60（代表60%）。完全用於工作則填 100。</div></div>
+  <div class="field-row"><div class="field-name">deductible_amount</div><div class="field-desc"><strong>可扣稅金額</strong>——total_amount × business_use_pct%。如 59.89 × 60% = 35.93。系統通常會自動計算。</div></div>
+  <div class="field-row"><div class="field-name">receipt_ref</div><div class="field-desc"><strong>收據編號</strong>——可選填。若有對收據進行掃描存檔，在此填入文件名稱或編號。</div></div>
+  <div class="field-row"><div class="field-name">notes</div><div class="field-desc"><strong>備註</strong>——可選填。如「待確認類別」、「與上月合併收費」。</div></div>
+  <div class="callout success">
+    <strong>✅ 完整填寫例子</strong><br>
+    expense_date: 2025-08-01 &nbsp;│&nbsp; vendor: Virgin Plus<br>
+    description: 八月份家用寬頻費 &nbsp;│&nbsp; category: Internet/Phone<br>
+    t2125_line: 9220 &nbsp;│&nbsp; total_amount: 59.89<br>
+    business_use_pct: 60 &nbsp;│&nbsp; deductible_amount: 35.93
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('expense-fields')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('expense-fields')">下一模組：🏦 銀行交易 →</button>
+  </div>
+</section>
     <section id="bank-deposit"     class="section"><p>（內容待填）</p></section>
     <section id="bank-conversion"  class="section"><p>（內容待填）</p></section>
     <section id="bank-fields"      class="section"><p>（內容待填）</p></section>
