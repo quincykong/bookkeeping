@@ -190,10 +190,118 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
   </nav>
 
   <main class="main-content">
-    <section id="basics-what"      class="section active"><p>（內容待填）</p></section>
-    <section id="basics-why"       class="section"><p>（內容待填）</p></section>
-    <section id="basics-t2125"     class="section"><p>（內容待填）</p></section>
-    <section id="basics-role"      class="section"><p>（內容待填）</p></section>
+    <section id="basics-what" class="section active">
+  <div class="breadcrumb">基礎概念 › 什麼是記帳？</div>
+  <h1>什麼是記帳？</h1>
+  <div class="section-divider"></div>
+  <p>記帳就是把每一筆<strong>生意上的金錢往來</strong>都記錄下來。你的工作很簡單：每個月把相關的收據和資料<strong>準確地輸入系統</strong>即可。</p>
+  <div class="grid-2">
+    <div class="card" style="border-top:3px solid #4db6e4">
+      <h3>💰 收入（發票）</h3>
+      <p style="font-size:13px;color:#666">完成工作後向客戶發出的帳單，記錄了賺了多少錢。</p>
+    </div>
+    <div class="card" style="border-top:3px solid #e74c3c">
+      <h3>🧾 支出（收據）</h3>
+      <p style="font-size:13px;color:#666">工作上花費的開支，例如網絡費、軟件費、辦公用品等。</p>
+    </div>
+  </div>
+  <div class="card" style="border-top:3px solid #52c07a;margin-bottom:16px">
+    <h3>🏦 銀行交易</h3>
+    <p style="font-size:13px;color:#666">客戶付款入帳，以及將美元換成加元的記錄。</p>
+  </div>
+  <div class="callout info">
+    <strong>💡 生活比喻</strong><br>
+    就像你平時記家庭開支一樣——幾月幾日、在哪裡買、買了什麼、花了多少錢。記帳也是同樣的道理，只是記錄的是工作上的錢。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-next" onclick="nextSection('basics-what')">下一節：為什麼要記帳？ →</button>
+  </div>
+</section>
+    <section id="basics-why" class="section">
+  <div class="breadcrumb">基礎概念 › 為什麼要記帳？</div>
+  <h1>為什麼要記帳？</h1>
+  <div class="section-divider"></div>
+  <p>在加拿大，自僱人士每年要向稅局（CRA）申報收入。準確的記帳有三個重要作用：</p>
+  <div class="callout success">
+    <strong>✅ 1. 合法減少稅款</strong><br>
+    工作上的支出（例如網絡費、軟件費）可以從收入中扣除，減少需要繳交的稅。如果沒有記錄，就不能扣除，等於多交稅。
+  </div>
+  <div class="callout info">
+    <strong>💡 2. 如果稅局查帳</strong><br>
+    加拿大稅局有權要求查閱帳目記錄（最多6年）。有清晰的記錄，就有保障。
+  </div>
+  <div class="callout warn">
+    <strong>⚠️ 3. 讓報稅快速準確</strong><br>
+    每個月記錄，到了年底報稅時只需把數字匯總，不用手忙腳亂地翻找一年的收據。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('basics-why')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('basics-why')">下一節：T2125報稅表 →</button>
+  </div>
+</section>
+    <section id="basics-t2125" class="section">
+  <div class="breadcrumb">基礎概念 › T2125報稅表簡介</div>
+  <h1>T2125報稅表簡介</h1>
+  <div class="section-divider"></div>
+  <p><strong>T2125</strong> 是加拿大稅局（CRA）的「業務及專業收入報表」，自僱人士每年報稅時需要填寫這份表格。</p>
+  <div class="callout info">
+    <strong>💡 你不需要填寫T2125</strong><br>
+    這份表格由專業人士填寫。你的工作是確保系統裡的記錄準確，這些數字最終會用來填T2125。
+  </div>
+  <p>了解T2125可以幫助你明白為什麼要記錄某些資料：</p>
+  <table>
+    <tr><th>T2125的部分</th><th>對應系統的記錄</th></tr>
+    <tr><td>業務收入（Gross Income）</td><td>發票金額總和（invoices）</td></tr>
+    <tr><td>電話及網絡費（Line 9220）</td><td>支出類別 = Internet/Phone</td></tr>
+    <tr><td>辦公室費用（Line 8810）</td><td>支出類別 = Office Supplies</td></tr>
+    <tr><td>專業費用（Line 8860）</td><td>支出類別 = Professional Fees</td></tr>
+    <tr><td>家用辦公室費用（Line 9945）</td><td>支出類別 = Home Office</td></tr>
+  </table>
+  <div class="callout warn">
+    <strong>⚠️ 關於「行號」（Line Number）</strong><br>
+    輸入支出時，你會看到「T2125行號」欄位（如9220）。這個數字幫助報稅時把支出歸類到T2125的正確位置。⚡ 快速參考頁有完整對照表。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('basics-t2125')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('basics-t2125')">下一節：你的角色 →</button>
+  </div>
+</section>
+    <section id="basics-role" class="section">
+  <div class="breadcrumb">基礎概念 › 你的角色</div>
+  <h1>你的角色</h1>
+  <div class="section-divider"></div>
+  <p>你的工作目標：<strong>每個月把所有相關記錄準確輸入系統</strong>。建議在每月底或下月初完成。</p>
+  <div class="grid-2">
+    <div class="card" style="border-left:4px solid #52c07a">
+      <h3 style="color:#1a5435">✅ 你需要做的</h3>
+      <ul>
+        <li>收集當月所有收據</li>
+        <li>輸入支出記錄（expenses）</li>
+        <li>輸入發票記錄（invoices）</li>
+        <li>輸入銀行存款及換匯記錄</li>
+        <li>保存收據（最少6年）</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left:4px solid #bdc3c7">
+      <h3 style="color:#7f8c8d">🚫 你不需要做的</h3>
+      <ul>
+        <li>計算應繳稅款</li>
+        <li>填寫T2125報稅表</li>
+        <li>做財務報表</li>
+        <li>處理與稅局的往來</li>
+        <li>管理HST申報</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout info">
+    <strong>💡 建議：每月一次</strong><br>
+    不要積壓。每個月底花30分鐘輸入當月記錄，比年底一次過輸入12個月的記錄容易得多，也不容易出錯。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('basics-role')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('basics-role')">下一模組：💰 收入記錄 →</button>
+  </div>
+</section>
     <section id="income-what"      class="section"><p>（內容待填）</p></section>
     <section id="income-hst"       class="section"><p>（內容待填）</p></section>
     <section id="income-fx"        class="section"><p>（內容待填）</p></section>
