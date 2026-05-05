@@ -520,9 +520,77 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
     <button class="btn-next" onclick="nextSection('expense-fields')">下一模組：🏦 銀行交易 →</button>
   </div>
 </section>
-    <section id="bank-deposit"     class="section"><p>（內容待填）</p></section>
-    <section id="bank-conversion"  class="section"><p>（內容待填）</p></section>
-    <section id="bank-fields"      class="section"><p>（內容待填）</p></section>
+    <section id="bank-deposit" class="section">
+  <div class="breadcrumb">銀行交易 › 存款記錄</div>
+  <h1>存款記錄</h1>
+  <div class="section-divider"></div>
+  <p>當客戶付款入帳時，需要記錄一筆<strong>存款（deposit）</strong>。這記錄了什麼時候、哪個銀行戶口、收到了多少美元。</p>
+  <div class="callout info">
+    <strong>💡 一次存款可以對應多張發票</strong><br>
+    有時候客戶會一次過支付幾個月的發票。在這種情況下，invoice_ref 欄填入所有相關發票的編號，如「BQG-001 &amp; BQG-002」。
+  </div>
+  <div class="callout success">
+    <strong>✅ 例子</strong><br>
+    2025年9月29日，客戶付了兩張發票（BQG-001和BQG-002），合共$14,599.60 USD存入BMO銀行。<br><br>
+    transaction_date: 2025-09-29 &nbsp;│&nbsp; bank: BMO &nbsp;│&nbsp; type: deposit<br>
+    invoice_ref: BQG-001 &amp; BQG-002 &nbsp;│&nbsp; amount_usd: 14599.60<br>
+    amount_cad: 0（存入的是美元帳戶，尚未換成加元）
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('bank-deposit')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('bank-deposit')">下一節：外幣兌換 →</button>
+  </div>
+</section>
+    <section id="bank-conversion" class="section">
+  <div class="breadcrumb">銀行交易 › 外幣兌換</div>
+  <h1>外幣兌換</h1>
+  <div class="section-divider"></div>
+  <p>美元存入帳戶後，通常會換成加元使用。每次換匯時，需要記錄一筆<strong>外幣兌換（conversion）</strong>記錄。</p>
+  <div class="callout info">
+    <strong>💡 實際匯率 vs BOC匯率</strong><br>
+    銀行給你的換匯匯率（actual_rate）和加拿大銀行的官方匯率（boc_rate）通常不同。兩者的差額會產生<strong>外匯盈虧（fx_gain_loss）</strong>：
+    <ul style="margin-top:8px">
+      <li>實際匯率比BOC好（換到更多加元）→ 外匯<strong>盈利</strong>（正數）</li>
+      <li>實際匯率比BOC差（換到較少加元）→ 外匯<strong>虧損</strong>（負數）</li>
+    </ul>
+  </div>
+  <div class="callout success">
+    <strong>✅ 例子</strong><br>
+    2025年10月23日，將$7,600 USD換成加元。<br>
+    銀行實際匯率：1 USD = 1.3566 CAD → 實際到帳：$10,310.16 CAD<br>
+    BOC官方匯率：1 USD = 1.3978 CAD → 按BOC應得：$10,623.28 CAD<br>
+    外匯虧損 = $10,310.16 − $10,623.28 = <strong>−$313.12</strong><br><br>
+    <em>即是說：銀行收取了差價作為手續費，比BOC匯率少換了$313.12加元，屬正常現象。</em>
+  </div>
+  <div class="callout warn">
+    <strong>⚠️ 系統會自動計算fx_gain_loss</strong><br>
+    只需填入 actual_rate 和 amount_cad（實際到帳加元），系統會自動計算外匯盈虧。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('bank-conversion')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('bank-conversion')">下一節：每個欄位說明 →</button>
+  </div>
+</section>
+    <section id="bank-fields" class="section">
+  <div class="breadcrumb">銀行交易 › 每個欄位說明</div>
+  <h1>銀行交易——每個欄位說明</h1>
+  <div class="section-divider"></div>
+  <div class="field-row"><div class="field-name">transaction_date</div><div class="field-desc"><strong>交易日期</strong>——銀行交易的日期，格式 YYYY-MM-DD，如 2025-09-29。</div></div>
+  <div class="field-row"><div class="field-name">bank</div><div class="field-desc"><strong>銀行名稱</strong>——進行交易的銀行，如 BMO、TD。</div></div>
+  <div class="field-row"><div class="field-name">type</div><div class="field-desc"><strong>交易類型</strong>——<code>deposit</code>（存款：客戶付款入帳）或 <code>conversion</code>（換匯：美元換加元）。</div></div>
+  <div class="field-row"><div class="field-name">invoice_ref</div><div class="field-desc"><strong>對應發票</strong>——此次存款對應的發票編號，如 BQG-001，多張則填 BQG-001 &amp; BQG-002。換匯記錄可留空。</div></div>
+  <div class="field-row"><div class="field-name">amount_usd</div><div class="field-desc"><strong>美元金額</strong>——存款或換匯的美元金額，如 14599.60。</div></div>
+  <div class="field-row"><div class="field-name">amount_cad</div><div class="field-desc"><strong>加元金額</strong>——實際到帳的加元金額。存款（美元帳戶）填 0；換匯時填實際到帳金額，如 10310.16。</div></div>
+  <div class="field-row"><div class="field-name">actual_rate</div><div class="field-desc"><strong>實際匯率</strong>——銀行提供的換匯匯率，如 1.3566。存款記錄填 0。</div></div>
+  <div class="field-row"><div class="field-name">boc_rate</div><div class="field-desc"><strong>BOC匯率</strong>——加拿大銀行的官方匯率，如 1.3978。從系統設定中取得。</div></div>
+  <div class="field-row"><div class="field-name">boc_cad_equiv</div><div class="field-desc"><strong>BOC等值加元</strong>——按BOC匯率計算應得的加元金額（amount_usd × boc_rate）。系統自動計算。</div></div>
+  <div class="field-row"><div class="field-name">fx_gain_loss</div><div class="field-desc"><strong>外匯盈虧</strong>——實際到帳加元與BOC等值的差額。系統自動計算，正數為盈利，負數為虧損。</div></div>
+  <div class="field-row"><div class="field-name">notes</div><div class="field-desc"><strong>備註</strong>——可選填，如需說明特殊情況。</div></div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('bank-fields')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('bank-fields')">下一模組：⚡ 快速參考 →</button>
+  </div>
+</section>
     <section id="ref-categories"   class="section"><p>（內容待填）</p></section>
     <section id="ref-checklist"    class="section"><p>（內容待填）</p></section>
     <section id="ref-faq"          class="section"><p>（內容待填）</p></section>
