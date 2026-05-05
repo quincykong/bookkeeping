@@ -591,9 +591,107 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
     <button class="btn-next" onclick="nextSection('bank-fields')">下一模組：⚡ 快速參考 →</button>
   </div>
 </section>
-    <section id="ref-categories"   class="section"><p>（內容待填）</p></section>
-    <section id="ref-checklist"    class="section"><p>（內容待填）</p></section>
-    <section id="ref-faq"          class="section"><p>（內容待填）</p></section>
+    <section id="ref-categories" class="section">
+  <div class="breadcrumb">快速參考 › 支出類別速查表</div>
+  <h1>支出類別速查表</h1>
+  <div class="section-divider"></div>
+  <p>輸入支出時的快速參考。
+    <button onclick="window.print()" style="margin-left:12px;background:var(--accent);color:white;border:none;padding:6px 14px;border-radius:4px;font-family:inherit;cursor:pointer;font-size:13px">🖨️ 列印此頁</button>
+  </p>
+  <table>
+    <tr><th>類別（Category）</th><th>T2125行號</th><th>常見支出例子</th><th>業務用途%</th></tr>
+    <tr><td><strong>Internet/Phone</strong></td><td>9220</td><td>家用寬頻費、手機月費</td><td>60%（或按實際）</td></tr>
+    <tr><td><strong>Office Supplies</strong></td><td>8810</td><td>文具、打印紙、墨盒、USB</td><td>100%</td></tr>
+    <tr><td><strong>Software/Subscription</strong></td><td>9220</td><td>Office 365、雲端服務、VPN、開發工具</td><td>100%</td></tr>
+    <tr><td><strong>Professional Fees</strong></td><td>8860</td><td>會計師費、法律費用、顧問費</td><td>100%</td></tr>
+    <tr><td><strong>Home Office</strong></td><td>9945</td><td>按辦公室佔家居面積比例的水電租金</td><td>視情況（如10%）</td></tr>
+    <tr><td><strong>Travel</strong></td><td>9281</td><td>工作相關交通費、停車費、的士</td><td>100%</td></tr>
+    <tr><td><strong>Bank Charges</strong></td><td>8710</td><td>銀行服務費、國際轉帳費、帳戶管理費</td><td>100%</td></tr>
+  </table>
+  <div class="callout warn">
+    <strong>⚠️ 有疑問時</strong>：在備註（notes）欄寫「待確認」，讓老公核實。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('ref-categories')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('ref-categories')">下一節：每月記帳清單 →</button>
+  </div>
+</section>
+    <section id="ref-checklist" class="section">
+  <div class="breadcrumb">快速參考 › 每月記帳清單</div>
+  <h1>每月記帳清單</h1>
+  <div class="section-divider"></div>
+  <p>在每月底或下月初，按以下清單逐項完成：</p>
+
+  <h3 style="margin:16px 0 10px;color:var(--sidebar-bg)">🧾 支出記錄</h3>
+  <div class="checklist-item"><div class="checklist-box"></div><div>收集當月所有收據（實體或電子）</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>為每張收據輸入一筆支出記錄</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>確認每張收據的類別和T2125行號正確</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>確認business_use_pct（業務用途百分比）正確填入</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>把收據存放安全（掃描或實體保存）</div></div>
+
+  <h3 style="margin:16px 0 10px;color:var(--sidebar-bg)">💰 發票記錄</h3>
+  <div class="checklist-item"><div class="checklist-box"></div><div>確認本月發票是否已由老公發出</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>輸入發票記錄，填入所有美元金額及BOC匯率</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>客戶付款後，更新發票狀態為 paid</div></div>
+
+  <h3 style="margin:16px 0 10px;color:var(--sidebar-bg)">🏦 銀行交易記錄</h3>
+  <div class="checklist-item"><div class="checklist-box"></div><div>查看銀行帳單，確認本月有沒有客戶付款入帳（deposit）</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>查看有沒有美元換加元的換匯記錄（conversion）</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>為每筆銀行交易輸入記錄</div></div>
+
+  <div class="callout info" style="margin-top:20px">
+    <strong>💡 完成後</strong><br>
+    通知老公本月記錄已完成，讓他審閱一遍，確保無誤。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('ref-checklist')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('ref-checklist')">下一節：常見問題 →</button>
+  </div>
+</section>
+    <section id="ref-faq" class="section">
+  <div class="breadcrumb">快速參考 › 常見問題</div>
+  <h1>常見問題</h1>
+  <div class="section-divider"></div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: 我沒有保留收據，怎麼辦？</div>
+    <div class="faq-a">如果是信用卡或銀行轉帳，可以用帳單記錄代替。如果是現金支付且沒有收據，這筆支出可能無法扣稅。建議從今以後養成保存收據的習慣，無論是拍照還是保留實體。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: 我不確定某張收據的類別，怎麼辦？</div>
+    <div class="faq-a">先填入最接近的類別，然後在備註（notes）欄寫「待確認類別」，完成後通知老公核實。不要因為不確定就跳過不輸入。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: 收據上的金額包含HST，我應該填哪個金額？</div>
+    <div class="faq-a">在支出記錄（expenses）中，total_amount 填收據上的<strong>總金額</strong>（包含HST），不需要分拆。加拿大稅局允許申請退回部分HST，這個交由老公處理。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: BOC匯率我去哪裡找？</div>
+    <div class="faq-a">系統設定（settings）裡有當前的BOC匯率，老公會定期更新。如果你發現匯率看起來太舊，通知老公更新即可。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: 如果我輸入錯了，可以更改嗎？</div>
+    <div class="faq-a">可以。在系統中找到該記錄，直接修改即可。如果不確定怎麼操作，通知老公幫忙修改。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: 收據需要保留多久？</div>
+    <div class="faq-a">加拿大稅局要求保留<strong>至少6年</strong>的記帳記錄和相關收據（從報稅年度起計算）。建議掃描成電子文件並備份。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: 私人和工作費用混合付款（如用同一張信用卡），怎麼處理？</div>
+    <div class="faq-a">沒有問題。只需要在輸入時，把跟工作有關的支出記錄下來，私人消費的收據不需要輸入系統。</div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('ref-faq')">← 上一節</button>
+  </div>
+</section>
   </main>
 </div>
 
