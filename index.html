@@ -205,7 +205,21 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
     overflow: auto !important;
     transform: translateX(-220px);
   }
-  .main-content { padding: 24px 20px; }
+  .main-content {
+    padding: 20px 16px;
+    max-width: 100%;
+  }
+  .grid-2 { grid-template-columns: 1fr; }
+  .field-row { grid-template-columns: 1fr; }
+  .field-name {
+    border-radius: 6px 6px 0 0;
+    border: 1px solid var(--border);
+    border-bottom: none;
+  }
+  .field-desc { border-radius: 0 0 6px 6px; }
+  table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .nav-buttons { flex-direction: column-reverse; }
+  .btn-next, .btn-prev { width: 100%; text-align: center; }
 }
 @media print {
   .site-header, .sidebar, .nav-buttons, .breadcrumb { display: none !important; }
@@ -246,7 +260,6 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
         <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-what')">什麼是發票？</a>
         <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-hst')">HST增值稅</a>
         <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-fx')">美元轉加元</a>
-        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-fields')">每個欄位說明</a>
       </div>
     </div>
 
@@ -256,7 +269,6 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
         <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-deductible')">哪些支出可扣稅？</a>
         <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-pct')">業務用途百分比</a>
         <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-categories')">支出類別列表</a>
-        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-fields')">每個欄位說明</a>
       </div>
     </div>
 
@@ -265,7 +277,6 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
       <div class="sidebar-group-links">
         <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('bank-deposit')">存款記錄</a>
         <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('bank-conversion')">外幣兌換</a>
-        <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('bank-fields')">每個欄位說明</a>
       </div>
     </div>
 
@@ -469,29 +480,7 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
   </div>
   <div class="nav-buttons">
     <button class="btn-prev" onclick="prevSection('income-fx')">← 上一節</button>
-    <button class="btn-next" onclick="nextSection('income-fx')">下一節：每個欄位說明 →</button>
-  </div>
-</section>
-    <section id="income-fields" class="section">
-  <div class="breadcrumb">收入記錄 › 每個欄位說明</div>
-  <h1>發票記錄——每個欄位說明</h1>
-  <div class="section-divider"></div>
-  <div class="field-row"><div class="field-name">invoice_number</div><div class="field-desc"><strong>發票編號</strong>——發票上的唯一編號，如 BQG-001。每張發票編號不同。</div></div>
-  <div class="field-row"><div class="field-name">invoice_date</div><div class="field-desc"><strong>發票日期</strong>——發票發出的日期，格式 YYYY-MM-DD，如 2025-08-03。</div></div>
-  <div class="field-row"><div class="field-name">hours</div><div class="field-desc"><strong>工作時數</strong>——該發票對應的工作小時數，如 60。</div></div>
-  <div class="field-row"><div class="field-name">rate_usd</div><div class="field-desc"><strong>時薪（美元）</strong>——每小時收費，如 85。</div></div>
-  <div class="field-row"><div class="field-name">amount_usd</div><div class="field-desc"><strong>服務費（美元）</strong>——hours × rate_usd，不含HST。如 60 × 85 = 5100。</div></div>
-  <div class="field-row"><div class="field-name">hst_usd</div><div class="field-desc"><strong>HST（美元）</strong>——amount_usd × 13%。如 5100 × 0.13 = 663。若客戶免HST則填0。</div></div>
-  <div class="field-row"><div class="field-name">total_usd</div><div class="field-desc"><strong>發票總額（美元）</strong>——amount_usd + hst_usd。如 5100 + 663 = 5763。</div></div>
-  <div class="field-row"><div class="field-name">boc_rate</div><div class="field-desc"><strong>BOC匯率</strong>——加拿大銀行的官方美元兌加元匯率，如 1.3978。從系統設定中取得。</div></div>
-  <div class="field-row"><div class="field-name">amount_cad</div><div class="field-desc"><strong>服務費（加元）</strong>——amount_usd × boc_rate。如 5100 × 1.3978 = 7128.78。</div></div>
-  <div class="field-row"><div class="field-name">hst_cad</div><div class="field-desc"><strong>HST（加元）</strong>——hst_usd × boc_rate。如 663 × 1.3978 = 926.74。</div></div>
-  <div class="field-row"><div class="field-name">total_cad</div><div class="field-desc"><strong>發票總額（加元）</strong>——total_usd × boc_rate。如 5763 × 1.3978 = 8055.52。</div></div>
-  <div class="field-row"><div class="field-name">status</div><div class="field-desc"><strong>付款狀態</strong>——<code>unpaid</code>（未付款）或 <code>paid</code>（已付款）。收到客戶付款後更新為 paid。</div></div>
-  <div class="field-row"><div class="field-name">notes</div><div class="field-desc"><strong>備註</strong>——可選填。如有特殊情況可在此說明。</div></div>
-  <div class="nav-buttons">
-    <button class="btn-prev" onclick="prevSection('income-fields')">← 上一節</button>
-    <button class="btn-next" onclick="nextSection('income-fields')">下一模組：🧾 支出記錄 →</button>
+    <button class="btn-next" onclick="nextSection('income-fx')">下一模組：🧾 支出記錄 →</button>
   </div>
 </section>
     <section id="expense-deductible" class="section">
@@ -545,7 +534,7 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
     業務用途百分比 = <strong>60%</strong><br>
     可扣稅金額 = $59.89 × 60% = $35.93<br><br>
     在系統中填入：<br>
-    total_amount = 59.89 &nbsp;│&nbsp; business_use_pct = 60 &nbsp;│&nbsp; deductible_amount = 35.93
+    total_amount = 59.89 &nbsp;│&nbsp; 業務用途百分比 = 60 &nbsp;│&nbsp; deductible_amount = 35.93
   </div>
   <div class="callout info">
     <strong>💡 百分比如何決定？</strong><br>
@@ -581,33 +570,7 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
   </div>
   <div class="nav-buttons">
     <button class="btn-prev" onclick="prevSection('expense-categories')">← 上一節</button>
-    <button class="btn-next" onclick="nextSection('expense-categories')">下一節：每個欄位說明 →</button>
-  </div>
-</section>
-    <section id="expense-fields" class="section">
-  <div class="breadcrumb">支出記錄 › 每個欄位說明</div>
-  <h1>支出記錄——每個欄位說明</h1>
-  <div class="section-divider"></div>
-  <div class="field-row"><div class="field-name">expense_date</div><div class="field-desc"><strong>收據日期</strong>——收據上的日期，格式 YYYY-MM-DD，如 2025-08-15。</div></div>
-  <div class="field-row"><div class="field-name">vendor</div><div class="field-desc"><strong>商戶名稱</strong>——收據上的公司名稱，如 Virgin Plus、Staples、Microsoft。</div></div>
-  <div class="field-row"><div class="field-name">description</div><div class="field-desc"><strong>用途描述</strong>——簡短說明這筆開支是什麼，如「八月份寬頻費」、「辦公室打印紙」。</div></div>
-  <div class="field-row"><div class="field-name">category</div><div class="field-desc"><strong>支出類別</strong>——從類別列表中選擇，如 Internet/Phone、Software/Subscription。參考上一節的類別表。</div></div>
-  <div class="field-row"><div class="field-name">t2125_line</div><div class="field-desc"><strong>T2125行號</strong>——對應類別的報稅表行號，如 9220。參考類別表，通常選完類別後會自動填入。</div></div>
-  <div class="field-row"><div class="field-name">total_amount</div><div class="field-desc"><strong>收據總金額</strong>——收據上的總金額（加元），如 59.89。</div></div>
-  <div class="field-row"><div class="field-name">business_use_pct</div><div class="field-desc"><strong>業務用途百分比</strong>——工作佔用的比例，如 60（代表60%）。完全用於工作則填 100。</div></div>
-  <div class="field-row"><div class="field-name">deductible_amount</div><div class="field-desc"><strong>可扣稅金額</strong>——total_amount × business_use_pct%。如 59.89 × 60% = 35.93。系統通常會自動計算。</div></div>
-  <div class="field-row"><div class="field-name">receipt_ref</div><div class="field-desc"><strong>收據編號</strong>——可選填。若有對收據進行掃描存檔，在此填入文件名稱或編號。</div></div>
-  <div class="field-row"><div class="field-name">notes</div><div class="field-desc"><strong>備註</strong>——可選填。如「待確認類別」、「與上月合併收費」。</div></div>
-  <div class="callout success">
-    <strong>✅ 完整填寫例子</strong><br>
-    expense_date: 2025-08-01 &nbsp;│&nbsp; vendor: Virgin Plus<br>
-    description: 八月份家用寬頻費 &nbsp;│&nbsp; category: Internet/Phone<br>
-    t2125_line: 9220 &nbsp;│&nbsp; total_amount: 59.89<br>
-    business_use_pct: 60 &nbsp;│&nbsp; deductible_amount: 35.93
-  </div>
-  <div class="nav-buttons">
-    <button class="btn-prev" onclick="prevSection('expense-fields')">← 上一節</button>
-    <button class="btn-next" onclick="nextSection('expense-fields')">下一模組：🏦 銀行交易 →</button>
+    <button class="btn-next" onclick="nextSection('expense-categories')">下一模組：🏦 銀行交易 →</button>
   </div>
 </section>
     <section id="bank-deposit" class="section">
@@ -658,27 +621,7 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
   </div>
   <div class="nav-buttons">
     <button class="btn-prev" onclick="prevSection('bank-conversion')">← 上一節</button>
-    <button class="btn-next" onclick="nextSection('bank-conversion')">下一節：每個欄位說明 →</button>
-  </div>
-</section>
-    <section id="bank-fields" class="section">
-  <div class="breadcrumb">銀行交易 › 每個欄位說明</div>
-  <h1>銀行交易——每個欄位說明</h1>
-  <div class="section-divider"></div>
-  <div class="field-row"><div class="field-name">transaction_date</div><div class="field-desc"><strong>交易日期</strong>——銀行交易的日期，格式 YYYY-MM-DD，如 2025-09-29。</div></div>
-  <div class="field-row"><div class="field-name">bank</div><div class="field-desc"><strong>銀行名稱</strong>——進行交易的銀行，如 BMO、TD。</div></div>
-  <div class="field-row"><div class="field-name">type</div><div class="field-desc"><strong>交易類型</strong>——<code>deposit</code>（存款：客戶付款入帳）或 <code>conversion</code>（換匯：美元換加元）。</div></div>
-  <div class="field-row"><div class="field-name">invoice_ref</div><div class="field-desc"><strong>對應發票</strong>——此次存款對應的發票編號，如 BQG-001，多張則填 BQG-001 &amp; BQG-002。換匯記錄可留空。</div></div>
-  <div class="field-row"><div class="field-name">amount_usd</div><div class="field-desc"><strong>美元金額</strong>——存款或換匯的美元金額，如 14599.60。</div></div>
-  <div class="field-row"><div class="field-name">amount_cad</div><div class="field-desc"><strong>加元金額</strong>——實際到帳的加元金額。存款（美元帳戶）填 0；換匯時填實際到帳金額，如 10310.16。</div></div>
-  <div class="field-row"><div class="field-name">actual_rate</div><div class="field-desc"><strong>實際匯率</strong>——銀行提供的換匯匯率，如 1.3566。存款記錄填 0。</div></div>
-  <div class="field-row"><div class="field-name">boc_rate</div><div class="field-desc"><strong>BOC匯率</strong>——加拿大銀行的官方匯率，如 1.3978。從系統設定中取得。</div></div>
-  <div class="field-row"><div class="field-name">boc_cad_equiv</div><div class="field-desc"><strong>BOC等值加元</strong>——按BOC匯率計算應得的加元金額（amount_usd × boc_rate）。系統自動計算。</div></div>
-  <div class="field-row"><div class="field-name">fx_gain_loss</div><div class="field-desc"><strong>外匯盈虧</strong>——實際到帳加元與BOC等值的差額。系統自動計算，正數為盈利，負數為虧損。</div></div>
-  <div class="field-row"><div class="field-name">notes</div><div class="field-desc"><strong>備註</strong>——可選填，如需說明特殊情況。</div></div>
-  <div class="nav-buttons">
-    <button class="btn-prev" onclick="prevSection('bank-fields')">← 上一節</button>
-    <button class="btn-next" onclick="nextSection('bank-fields')">下一模組：⚡ 快速參考 →</button>
+    <button class="btn-next" onclick="nextSection('bank-conversion')">下一模組：⚡ 快速參考 →</button>
   </div>
 </section>
     <section id="ref-categories" class="section">
@@ -716,7 +659,7 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
   <div class="checklist-item"><div class="checklist-box"></div><div>收集當月所有收據（實體或電子）</div></div>
   <div class="checklist-item"><div class="checklist-box"></div><div>為每張收據輸入一筆支出記錄</div></div>
   <div class="checklist-item"><div class="checklist-box"></div><div>確認每張收據的類別和T2125行號正確</div></div>
-  <div class="checklist-item"><div class="checklist-box"></div><div>確認business_use_pct（業務用途百分比）正確填入</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>確認業務用途百分比正確填入</div></div>
   <div class="checklist-item"><div class="checklist-box"></div><div>把收據存放安全（掃描或實體保存）</div></div>
 
   <h3 style="margin:16px 0 10px;color:var(--sidebar-bg)">💰 發票記錄</h3>
@@ -788,9 +731,9 @@ code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12p
 <script>
 const SECTIONS = [
   'basics-what','basics-why','basics-t2125','basics-role',
-  'income-what','income-hst','income-fx','income-fields',
-  'expense-deductible','expense-pct','expense-categories','expense-fields',
-  'bank-deposit','bank-conversion','bank-fields',
+  'income-what','income-hst','income-fx',
+  'expense-deductible','expense-pct','expense-categories',
+  'bank-deposit','bank-conversion',
   'ref-categories','ref-checklist','ref-faq'
 ];
 
