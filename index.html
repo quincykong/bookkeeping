@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>記帳課程——自僱IT顧問</title>
+<style>
+:root {
+  --sidebar-bg: #1e2d3d;
+  --sidebar-text: #cdd6e0;
+  --sidebar-active: #4db6e4;
+  --sidebar-muted: #7a9ab0;
+  --sidebar-hover: #2d4052;
+  --accent: #4db6e4;
+  --body-bg: #f5f7fa;
+  --text: #2c3e50;
+  --text-muted: #666;
+  --border: #e0e6ed;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Microsoft JhengHei','PingFang TC','Noto Sans TC',sans-serif;
+  background: var(--body-bg);
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.site-header {
+  background: var(--sidebar-bg);
+  color: white;
+  padding: 14px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+.layout { display: flex; flex: 1; }
+.sidebar {
+  width: 220px;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
+  flex-shrink: 0;
+  position: sticky;
+  top: 0;
+  height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.sidebar-section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--sidebar-muted);
+  padding: 16px 16px 8px;
+  border-bottom: 1px solid var(--sidebar-hover);
+  margin-bottom: 4px;
+}
+.sidebar-module {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: bold;
+  color: var(--sidebar-text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+.sidebar-link {
+  display: block;
+  padding: 5px 16px 5px 32px;
+  font-size: 12px;
+  color: var(--sidebar-muted);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.15s, background 0.15s;
+}
+.sidebar-link:hover { color: var(--sidebar-text); background: var(--sidebar-hover); }
+.sidebar-link.active {
+  color: var(--sidebar-active);
+  border-left: 3px solid var(--sidebar-active);
+  padding-left: 29px;
+  background: rgba(77,182,228,0.08);
+}
+.main-content {
+  flex: 1;
+  padding: 32px 40px;
+  max-width: 820px;
+}
+.section { display: none; }
+.section.active { display: block; }
+.breadcrumb { font-size: 12px; color: var(--sidebar-muted); margin-bottom: 12px; }
+h1 { font-size: 24px; color: var(--sidebar-bg); margin-bottom: 8px; }
+.section-divider { width: 48px; height: 3px; background: var(--accent); margin-bottom: 20px; }
+p { line-height: 1.75; margin-bottom: 14px; }
+ul, ol { margin-left: 20px; line-height: 1.9; margin-bottom: 14px; font-size: 14px; }
+.callout {
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.callout.info  { background: #e8f4fd; border-left: 4px solid var(--accent); color: #1a5276; }
+.callout.warn  { background: #fef9e7; border-left: 4px solid #f0c040; color: #7d6608; }
+.callout.success { background: #e8f8f5; border-left: 4px solid #52c07a; color: #1a5435; }
+table { width: 100%; border-collapse: collapse; margin-bottom: 16px; font-size: 13px; }
+th { background: var(--sidebar-bg); color: white; padding: 8px 12px; text-align: left; }
+td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+tr:hover td { background: #f0f4f8; }
+code { background: #f0f4f8; padding: 1px 5px; border-radius: 3px; font-size: 12px; }
+.nav-buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  gap: 12px;
+}
+.btn-next {
+  background: var(--accent); color: white; border: none;
+  padding: 10px 20px; border-radius: 6px; font-size: 14px;
+  font-family: inherit; cursor: pointer; font-weight: bold;
+}
+.btn-prev {
+  background: transparent; color: var(--accent);
+  border: 2px solid var(--accent);
+  padding: 10px 20px; border-radius: 6px; font-size: 14px;
+  font-family: inherit; cursor: pointer; font-weight: bold;
+}
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.card { border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+.card h3 { font-size: 14px; margin-bottom: 8px; }
+.card ul { font-size: 13px; color: var(--text-muted); }
+.field-row { display: grid; grid-template-columns: 190px 1fr; gap: 0; margin-bottom: 10px; font-size: 13px; }
+.field-name {
+  background: #f0f4f8; padding: 10px 14px;
+  border-radius: 6px 0 0 6px; font-family: monospace;
+  font-weight: bold; color: #1a5276;
+  border: 1px solid var(--border); border-right: none;
+}
+.field-desc { padding: 10px 14px; border-radius: 0 6px 6px 0; border: 1px solid var(--border); line-height: 1.5; }
+.faq-item { margin-bottom: 20px; }
+.faq-q { font-weight: bold; color: var(--sidebar-bg); margin-bottom: 6px; font-size: 15px; }
+.faq-a { font-size: 14px; line-height: 1.7; color: var(--text); }
+.checklist-item { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 10px; font-size: 14px; }
+.checklist-box { width: 18px; height: 18px; border: 2px solid var(--accent); border-radius: 3px; flex-shrink: 0; margin-top: 2px; }
+@media print {
+  .site-header, .sidebar, .nav-buttons, .breadcrumb { display: none !important; }
+  .layout { display: block; }
+  .main-content { padding: 0; max-width: 100%; }
+  .section { display: none !important; }
+  #ref-categories, #ref-checklist { display: block !important; }
+  button { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">📚 自僱IT顧問記帳課程</header>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="sidebar-section-title">課程目錄</div>
+
+    <div class="sidebar-module">📖 基礎概念</div>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('basics-what')">什麼是記帳？</a>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('basics-why')">為什麼要記帳？</a>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('basics-t2125')">T2125報稅表簡介</a>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('basics-role')">你的角色</a>
+
+    <div class="sidebar-module">💰 收入記錄</div>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-what')">什麼是發票？</a>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-hst')">HST增值稅</a>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-fx')">美元轉加元</a>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('income-fields')">每個欄位說明</a>
+
+    <div class="sidebar-module">🧾 支出記錄</div>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-deductible')">哪些支出可扣稅？</a>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-pct')">業務用途百分比</a>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-categories')">支出類別列表</a>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('expense-fields')">每個欄位說明</a>
+
+    <div class="sidebar-module">🏦 銀行交易</div>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('bank-deposit')">存款記錄</a>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('bank-conversion')">外幣兌換</a>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('bank-fields')">每個欄位說明</a>
+
+    <div class="sidebar-module" style="color:#52c07a;">⚡ 快速參考</div>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('ref-categories')">支出類別速查表</a>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('ref-checklist')">每月記帳清單</a>
+    <a class="sidebar-link" href="javascript:void(0)" onclick="showSection('ref-faq')">常見問題</a>
+  </nav>
+
+  <main class="main-content">
+    <section id="basics-what" class="section active">
+  <div class="breadcrumb">基礎概念 › 什麼是記帳？</div>
+  <h1>什麼是記帳？</h1>
+  <div class="section-divider"></div>
+  <p>記帳就是把每一筆<strong>生意上的金錢往來</strong>都記錄下來。你的工作很簡單：每個月把相關的收據和資料<strong>準確地輸入系統</strong>即可。</p>
+  <div class="grid-2">
+    <div class="card" style="border-top:3px solid #4db6e4">
+      <h3>💰 收入（發票）</h3>
+      <p style="font-size:13px;color:#666">完成工作後向客戶發出的帳單，記錄了賺了多少錢。</p>
+    </div>
+    <div class="card" style="border-top:3px solid #e74c3c">
+      <h3>🧾 支出（收據）</h3>
+      <p style="font-size:13px;color:#666">工作上花費的開支，例如網絡費、軟件費、辦公用品等。</p>
+    </div>
+  </div>
+  <div class="card" style="border-top:3px solid #52c07a;margin-bottom:16px">
+    <h3>🏦 銀行交易</h3>
+    <p style="font-size:13px;color:#666">客戶付款入帳，以及將美元換成加元的記錄。</p>
+  </div>
+  <div class="callout info">
+    <strong>💡 生活比喻</strong><br>
+    就像你平時記家庭開支一樣——幾月幾日、在哪裡買、買了什麼、花了多少錢。記帳也是同樣的道理，只是記錄的是工作上的錢。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-next" onclick="nextSection('basics-what')">下一節：為什麼要記帳？ →</button>
+  </div>
+</section>
+    <section id="basics-why" class="section">
+  <div class="breadcrumb">基礎概念 › 為什麼要記帳？</div>
+  <h1>為什麼要記帳？</h1>
+  <div class="section-divider"></div>
+  <p>在加拿大，自僱人士每年要向稅局（CRA）申報收入。準確的記帳有三個重要作用：</p>
+  <div class="callout success">
+    <strong>✅ 1. 合法減少稅款</strong><br>
+    工作上的支出（例如網絡費、軟件費）可以從收入中扣除，減少需要繳交的稅。如果沒有記錄，就不能扣除，等於多交稅。
+  </div>
+  <div class="callout info">
+    <strong>💡 2. 如果稅局查帳</strong><br>
+    加拿大稅局有權要求查閱帳目記錄（最多6年）。有清晰的記錄，就有保障。
+  </div>
+  <div class="callout warn">
+    <strong>⚠️ 3. 讓報稅快速準確</strong><br>
+    每個月記錄，到了年底報稅時只需把數字匯總，不用手忙腳亂地翻找一年的收據。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('basics-why')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('basics-why')">下一節：T2125報稅表 →</button>
+  </div>
+</section>
+    <section id="basics-t2125" class="section">
+  <div class="breadcrumb">基礎概念 › T2125報稅表簡介</div>
+  <h1>T2125報稅表簡介</h1>
+  <div class="section-divider"></div>
+  <p><strong>T2125</strong> 是加拿大稅局（CRA）的「業務及專業收入報表」，自僱人士每年報稅時需要填寫這份表格。</p>
+  <div class="callout info">
+    <strong>💡 你不需要填寫T2125</strong><br>
+    這份表格由專業人士填寫。你的工作是確保系統裡的記錄準確，這些數字最終會用來填T2125。
+  </div>
+  <p>了解T2125可以幫助你明白為什麼要記錄某些資料：</p>
+  <table>
+    <tr><th>T2125的部分</th><th>對應系統的記錄</th></tr>
+    <tr><td>業務收入（Gross Income）</td><td>發票金額總和（invoices）</td></tr>
+    <tr><td>電話及網絡費（Line 9220）</td><td>支出類別 = Internet/Phone</td></tr>
+    <tr><td>辦公室費用（Line 8810）</td><td>支出類別 = Office Supplies</td></tr>
+    <tr><td>專業費用（Line 8860）</td><td>支出類別 = Professional Fees</td></tr>
+    <tr><td>家用辦公室費用（Line 9945）</td><td>支出類別 = Home Office</td></tr>
+  </table>
+  <div class="callout warn">
+    <strong>⚠️ 關於「行號」（Line Number）</strong><br>
+    輸入支出時，你會看到「T2125行號」欄位（如9220）。這個數字幫助報稅時把支出歸類到T2125的正確位置。⚡ 快速參考頁有完整對照表。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('basics-t2125')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('basics-t2125')">下一節：你的角色 →</button>
+  </div>
+</section>
+    <section id="basics-role" class="section">
+  <div class="breadcrumb">基礎概念 › 你的角色</div>
+  <h1>你的角色</h1>
+  <div class="section-divider"></div>
+  <p>你的工作目標：<strong>每個月把所有相關記錄準確輸入系統</strong>。建議在每月底或下月初完成。</p>
+  <div class="grid-2">
+    <div class="card" style="border-left:4px solid #52c07a">
+      <h3 style="color:#1a5435">✅ 你需要做的</h3>
+      <ul>
+        <li>收集當月所有收據</li>
+        <li>輸入支出記錄（expenses）</li>
+        <li>輸入發票記錄（invoices）</li>
+        <li>輸入銀行存款及換匯記錄</li>
+        <li>保存收據（最少6年）</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left:4px solid #bdc3c7">
+      <h3 style="color:#7f8c8d">🚫 你不需要做的</h3>
+      <ul>
+        <li>計算應繳稅款</li>
+        <li>填寫T2125報稅表</li>
+        <li>做財務報表</li>
+        <li>處理與稅局的往來</li>
+        <li>管理HST申報</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout info">
+    <strong>💡 建議：每月一次</strong><br>
+    不要積壓。每個月底花30分鐘輸入當月記錄，比年底一次過輸入12個月的記錄容易得多，也不容易出錯。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('basics-role')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('basics-role')">下一模組：💰 收入記錄 →</button>
+  </div>
+</section>
+    <section id="income-what" class="section">
+  <div class="breadcrumb">收入記錄 › 什麼是發票？</div>
+  <h1>什麼是發票？</h1>
+  <div class="section-divider"></div>
+  <p>發票（Invoice）是完成工作後向客戶發出的<strong>正式收費單據</strong>。就像餐廳吃完飯收到的帳單，只是這裡是IT服務的帳單。</p>
+  <p>每張發票記錄了：</p>
+  <ul>
+    <li>這個月做了多少小時的工作</li>
+    <li>每小時的收費是多少（美元）</li>
+    <li>總收費金額（含HST）</li>
+    <li>客戶有沒有付款</li>
+  </ul>
+  <div class="callout info">
+    <strong>💡 發票由老公負責發出</strong><br>
+    發票通常在每月工作完成後發給客戶。你的工作是在客戶<strong>確認付款後</strong>，把發票資料輸入系統，並更新付款狀態為「paid」。
+  </div>
+  <div class="callout success">
+    <strong>✅ 例子</strong><br>
+    2025年8月完成了60小時工作，每小時$85美元。<br>
+    服務費 = 60 × $85 = $5,100 USD<br>
+    加上HST 13% = $5,100 × 13% = $663 USD<br>
+    發票總金額 = $5,763 USD
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('income-what')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('income-what')">下一節：HST增值稅 →</button>
+  </div>
+</section>
+    <section id="income-hst" class="section">
+  <div class="breadcrumb">收入記錄 › HST增值稅</div>
+  <h1>HST增值稅</h1>
+  <div class="section-divider"></div>
+  <p><strong>HST（Harmonized Sales Tax）</strong>是加拿大的消費稅。在安省（Ontario），稅率是<strong>13%</strong>。</p>
+  <div class="callout warn">
+    <strong>⚠️ 重要：HST不是收入</strong><br>
+    向客戶收取的HST不算是收入——它只是「代稅局收的稅」，定期需要上交給稅局（CRA）。因此在記帳時，我們分開記錄本金和HST。
+  </div>
+  <div class="callout success">
+    <strong>✅ 計算例子</strong><br>
+    服務費（本金）= $5,100 USD<br>
+    HST = $5,100 × 13% = $663 USD<br>
+    發票總額 = $5,100 + $663 = $5,763 USD<br><br>
+    在系統中分別填入：<br>
+    amount_usd = 5100 &nbsp;│&nbsp; hst_usd = 663 &nbsp;│&nbsp; total_usd = 5763
+  </div>
+  <div class="callout info">
+    <strong>💡 如果客戶不用付HST？</strong><br>
+    部分美國客戶不需要繳交加拿大HST。在這種情況下，hst_usd = 0，total_usd = amount_usd。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('income-hst')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('income-hst')">下一節：美元轉加元 →</button>
+  </div>
+</section>
+    <section id="income-fx" class="section">
+  <div class="breadcrumb">收入記錄 › 美元轉加元</div>
+  <h1>美元轉加元</h1>
+  <div class="section-divider"></div>
+  <p>客戶以<strong>美元（USD）</strong>付款，但加拿大報稅必須用<strong>加元（CAD）</strong>。所以每張發票都需要把美元金額換算成加元。</p>
+  <div class="callout info">
+    <strong>💡 為什麼用加拿大銀行匯率（BOC Rate）？</strong><br>
+    加拿大稅局規定，申報收入時必須使用加拿大銀行公布的官方匯率，而不是你實際換匯的匯率。這個匯率稱為「BOC Rate」（Bank of Canada Rate）。
+  </div>
+  <div class="callout success">
+    <strong>✅ 換算例子</strong><br>
+    發票服務費：$5,100 USD<br>
+    當月BOC匯率：1 USD = 1.3978 CAD<br>
+    換算後：$5,100 × 1.3978 = $7,128.78 CAD<br><br>
+    HST換算：$663 × 1.3978 = $926.74 CAD<br>
+    發票總額：$5,763 × 1.3978 = $8,055.52 CAD
+  </div>
+  <div class="callout warn">
+    <strong>⚠️ BOC匯率在哪裡找？</strong><br>
+    系統設定（settings）裡有當前的BOC匯率。如果老公已更新，直接用系統顯示的數字即可。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('income-fx')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('income-fx')">下一節：每個欄位說明 →</button>
+  </div>
+</section>
+    <section id="income-fields" class="section">
+  <div class="breadcrumb">收入記錄 › 每個欄位說明</div>
+  <h1>發票記錄——每個欄位說明</h1>
+  <div class="section-divider"></div>
+  <div class="field-row"><div class="field-name">invoice_number</div><div class="field-desc"><strong>發票編號</strong>——發票上的唯一編號，如 BQG-001。每張發票編號不同。</div></div>
+  <div class="field-row"><div class="field-name">invoice_date</div><div class="field-desc"><strong>發票日期</strong>——發票發出的日期，格式 YYYY-MM-DD，如 2025-08-03。</div></div>
+  <div class="field-row"><div class="field-name">hours</div><div class="field-desc"><strong>工作時數</strong>——該發票對應的工作小時數，如 60。</div></div>
+  <div class="field-row"><div class="field-name">rate_usd</div><div class="field-desc"><strong>時薪（美元）</strong>——每小時收費，如 85。</div></div>
+  <div class="field-row"><div class="field-name">amount_usd</div><div class="field-desc"><strong>服務費（美元）</strong>——hours × rate_usd，不含HST。如 60 × 85 = 5100。</div></div>
+  <div class="field-row"><div class="field-name">hst_usd</div><div class="field-desc"><strong>HST（美元）</strong>——amount_usd × 13%。如 5100 × 0.13 = 663。若客戶免HST則填0。</div></div>
+  <div class="field-row"><div class="field-name">total_usd</div><div class="field-desc"><strong>發票總額（美元）</strong>——amount_usd + hst_usd。如 5100 + 663 = 5763。</div></div>
+  <div class="field-row"><div class="field-name">boc_rate</div><div class="field-desc"><strong>BOC匯率</strong>——加拿大銀行的官方美元兌加元匯率，如 1.3978。從系統設定中取得。</div></div>
+  <div class="field-row"><div class="field-name">amount_cad</div><div class="field-desc"><strong>服務費（加元）</strong>——amount_usd × boc_rate。如 5100 × 1.3978 = 7128.78。</div></div>
+  <div class="field-row"><div class="field-name">hst_cad</div><div class="field-desc"><strong>HST（加元）</strong>——hst_usd × boc_rate。如 663 × 1.3978 = 926.74。</div></div>
+  <div class="field-row"><div class="field-name">total_cad</div><div class="field-desc"><strong>發票總額（加元）</strong>——total_usd × boc_rate。如 5763 × 1.3978 = 8055.52。</div></div>
+  <div class="field-row"><div class="field-name">status</div><div class="field-desc"><strong>付款狀態</strong>——<code>unpaid</code>（未付款）或 <code>paid</code>（已付款）。收到客戶付款後更新為 paid。</div></div>
+  <div class="field-row"><div class="field-name">notes</div><div class="field-desc"><strong>備註</strong>——可選填。如有特殊情況可在此說明。</div></div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('income-fields')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('income-fields')">下一模組：🧾 支出記錄 →</button>
+  </div>
+</section>
+    <section id="expense-deductible" class="section">
+  <div class="breadcrumb">支出記錄 › 哪些支出可扣稅？</div>
+  <h1>哪些支出可扣稅？</h1>
+  <div class="section-divider"></div>
+  <p>並非所有開支都可以在報稅時扣除。基本原則：<strong>因為工作而產生的合理開支</strong>才可扣稅。</p>
+  <div class="grid-2">
+    <div class="card" style="border-top:3px solid #52c07a">
+      <h3 style="color:#1a5435">✅ 可扣稅的支出</h3>
+      <ul>
+        <li>家用網絡費（部分）</li>
+        <li>手機費（部分）</li>
+        <li>辦公室文具用品</li>
+        <li>軟件訂閱（如 Office 365）</li>
+        <li>專業費用（如會計師費）</li>
+        <li>工作相關交通費</li>
+        <li>家用辦公室費用（部分）</li>
+      </ul>
+    </div>
+    <div class="card" style="border-top:3px solid #e74c3c">
+      <h3 style="color:#c0392b">❌ 不可扣稅的支出</h3>
+      <ul>
+        <li>個人娛樂費用</li>
+        <li>日常食物</li>
+        <li>個人衣物</li>
+        <li>家居裝修（非辦公室）</li>
+        <li>個人旅遊費用</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout warn">
+    <strong>⚠️ 有疑問時</strong><br>
+    如果不確定某張收據是否可扣稅，先記錄下來，在備註（notes）欄寫上「待確認」，讓老公核實。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('expense-deductible')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('expense-deductible')">下一節：業務用途百分比 →</button>
+  </div>
+</section>
+    <section id="expense-pct" class="section">
+  <div class="breadcrumb">支出記錄 › 業務用途百分比</div>
+  <h1>業務用途百分比</h1>
+  <div class="section-divider"></div>
+  <p>有些開支是<strong>私用與工作共用</strong>的，例如家用寬頻——你也會用它娛樂。稅局只允許扣除「工作部分」。</p>
+  <p>「業務用途百分比」就是用來說明這筆開支有多少比例用於工作。</p>
+  <div class="callout success">
+    <strong>✅ 例子：家用寬頻</strong><br>
+    每月寬頻費：$59.89<br>
+    估計60%用於工作（辦公時間使用）<br>
+    業務用途百分比 = <strong>60%</strong><br>
+    可扣稅金額 = $59.89 × 60% = $35.93<br><br>
+    在系統中填入：<br>
+    total_amount = 59.89 &nbsp;│&nbsp; business_use_pct = 60 &nbsp;│&nbsp; deductible_amount = 35.93
+  </div>
+  <div class="callout info">
+    <strong>💡 百分比如何決定？</strong><br>
+    通常由老公根據實際使用情況決定，並保持一致（每年用同樣的比例）。如果沒有特別說明，沿用慣常的百分比即可。
+  </div>
+  <div class="callout warn">
+    <strong>⚠️ 完全用於工作的支出</strong><br>
+    如某項支出100%用於工作（如工作專用軟件訂閱），業務用途百分比 = 100，可扣稅金額 = 總金額。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('expense-pct')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('expense-pct')">下一節：支出類別列表 →</button>
+  </div>
+</section>
+    <section id="expense-categories" class="section">
+  <div class="breadcrumb">支出記錄 › 支出類別列表</div>
+  <h1>支出類別列表</h1>
+  <div class="section-divider"></div>
+  <p>輸入支出時，需要選擇正確的<strong>類別（category）</strong>和對應的<strong>T2125行號</strong>：</p>
+  <table>
+    <tr><th>類別名稱</th><th>T2125行號</th><th>常見例子</th><th>典型業務%</th></tr>
+    <tr><td><strong>Internet/Phone</strong></td><td>9220</td><td>家用寬頻費、手機月費</td><td>60%</td></tr>
+    <tr><td><strong>Office Supplies</strong></td><td>8810</td><td>文具、打印紙、墨盒</td><td>100%</td></tr>
+    <tr><td><strong>Software/Subscription</strong></td><td>9220</td><td>Office 365、雲端服務、開發工具</td><td>100%</td></tr>
+    <tr><td><strong>Professional Fees</strong></td><td>8860</td><td>會計師費、法律費用</td><td>100%</td></tr>
+    <tr><td><strong>Home Office</strong></td><td>9945</td><td>按辦公室佔家居面積比例的水電租金</td><td>視情況</td></tr>
+    <tr><td><strong>Travel</strong></td><td>9281</td><td>工作相關交通費、停車費</td><td>100%</td></tr>
+    <tr><td><strong>Bank Charges</strong></td><td>8710</td><td>銀行服務費、國際轉帳費</td><td>100%</td></tr>
+  </table>
+  <div class="callout info">
+    <strong>💡 拿不準類別？</strong><br>
+    先選最接近的類別，然後在備註（notes）欄說明，讓老公確認。⚡ 快速參考頁有可列印版本。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('expense-categories')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('expense-categories')">下一節：每個欄位說明 →</button>
+  </div>
+</section>
+    <section id="expense-fields" class="section">
+  <div class="breadcrumb">支出記錄 › 每個欄位說明</div>
+  <h1>支出記錄——每個欄位說明</h1>
+  <div class="section-divider"></div>
+  <div class="field-row"><div class="field-name">expense_date</div><div class="field-desc"><strong>收據日期</strong>——收據上的日期，格式 YYYY-MM-DD，如 2025-08-15。</div></div>
+  <div class="field-row"><div class="field-name">vendor</div><div class="field-desc"><strong>商戶名稱</strong>——收據上的公司名稱，如 Virgin Plus、Staples、Microsoft。</div></div>
+  <div class="field-row"><div class="field-name">description</div><div class="field-desc"><strong>用途描述</strong>——簡短說明這筆開支是什麼，如「八月份寬頻費」、「辦公室打印紙」。</div></div>
+  <div class="field-row"><div class="field-name">category</div><div class="field-desc"><strong>支出類別</strong>——從類別列表中選擇，如 Internet/Phone、Software/Subscription。參考上一節的類別表。</div></div>
+  <div class="field-row"><div class="field-name">t2125_line</div><div class="field-desc"><strong>T2125行號</strong>——對應類別的報稅表行號，如 9220。參考類別表，通常選完類別後會自動填入。</div></div>
+  <div class="field-row"><div class="field-name">total_amount</div><div class="field-desc"><strong>收據總金額</strong>——收據上的總金額（加元），如 59.89。</div></div>
+  <div class="field-row"><div class="field-name">business_use_pct</div><div class="field-desc"><strong>業務用途百分比</strong>——工作佔用的比例，如 60（代表60%）。完全用於工作則填 100。</div></div>
+  <div class="field-row"><div class="field-name">deductible_amount</div><div class="field-desc"><strong>可扣稅金額</strong>——total_amount × business_use_pct%。如 59.89 × 60% = 35.93。系統通常會自動計算。</div></div>
+  <div class="field-row"><div class="field-name">receipt_ref</div><div class="field-desc"><strong>收據編號</strong>——可選填。若有對收據進行掃描存檔，在此填入文件名稱或編號。</div></div>
+  <div class="field-row"><div class="field-name">notes</div><div class="field-desc"><strong>備註</strong>——可選填。如「待確認類別」、「與上月合併收費」。</div></div>
+  <div class="callout success">
+    <strong>✅ 完整填寫例子</strong><br>
+    expense_date: 2025-08-01 &nbsp;│&nbsp; vendor: Virgin Plus<br>
+    description: 八月份家用寬頻費 &nbsp;│&nbsp; category: Internet/Phone<br>
+    t2125_line: 9220 &nbsp;│&nbsp; total_amount: 59.89<br>
+    business_use_pct: 60 &nbsp;│&nbsp; deductible_amount: 35.93
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('expense-fields')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('expense-fields')">下一模組：🏦 銀行交易 →</button>
+  </div>
+</section>
+    <section id="bank-deposit" class="section">
+  <div class="breadcrumb">銀行交易 › 存款記錄</div>
+  <h1>存款記錄</h1>
+  <div class="section-divider"></div>
+  <p>當客戶付款入帳時，需要記錄一筆<strong>存款（deposit）</strong>。這記錄了什麼時候、哪個銀行戶口、收到了多少美元。</p>
+  <div class="callout info">
+    <strong>💡 一次存款可以對應多張發票</strong><br>
+    有時候客戶會一次過支付幾個月的發票。在這種情況下，invoice_ref 欄填入所有相關發票的編號，如「BQG-001 &amp; BQG-002」。
+  </div>
+  <div class="callout success">
+    <strong>✅ 例子</strong><br>
+    2025年9月29日，客戶付了兩張發票（BQG-001和BQG-002），合共$14,599.60 USD存入BMO銀行。<br><br>
+    transaction_date: 2025-09-29 &nbsp;│&nbsp; bank: BMO &nbsp;│&nbsp; type: deposit<br>
+    invoice_ref: BQG-001 &amp; BQG-002 &nbsp;│&nbsp; amount_usd: 14599.60<br>
+    amount_cad: 0（存入的是美元帳戶，尚未換成加元）
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('bank-deposit')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('bank-deposit')">下一節：外幣兌換 →</button>
+  </div>
+</section>
+    <section id="bank-conversion" class="section">
+  <div class="breadcrumb">銀行交易 › 外幣兌換</div>
+  <h1>外幣兌換</h1>
+  <div class="section-divider"></div>
+  <p>美元存入帳戶後，通常會換成加元使用。每次換匯時，需要記錄一筆<strong>外幣兌換（conversion）</strong>記錄。</p>
+  <div class="callout info">
+    <strong>💡 實際匯率 vs BOC匯率</strong><br>
+    銀行給你的換匯匯率（actual_rate）和加拿大銀行的官方匯率（boc_rate）通常不同。兩者的差額會產生<strong>外匯盈虧（fx_gain_loss）</strong>：
+    <ul style="margin-top:8px">
+      <li>實際匯率比BOC好（換到更多加元）→ 外匯<strong>盈利</strong>（正數）</li>
+      <li>實際匯率比BOC差（換到較少加元）→ 外匯<strong>虧損</strong>（負數）</li>
+    </ul>
+  </div>
+  <div class="callout success">
+    <strong>✅ 例子</strong><br>
+    2025年10月23日，將$7,600 USD換成加元。<br>
+    銀行實際匯率：1 USD = 1.3566 CAD → 實際到帳：$10,310.16 CAD<br>
+    BOC官方匯率：1 USD = 1.3978 CAD → 按BOC應得：$10,623.28 CAD<br>
+    外匯虧損 = $10,310.16 − $10,623.28 = <strong>−$313.12</strong><br><br>
+    <em>即是說：銀行收取了差價作為手續費，比BOC匯率少換了$313.12加元，屬正常現象。</em>
+  </div>
+  <div class="callout warn">
+    <strong>⚠️ 系統會自動計算fx_gain_loss</strong><br>
+    只需填入 actual_rate 和 amount_cad（實際到帳加元），系統會自動計算外匯盈虧。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('bank-conversion')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('bank-conversion')">下一節：每個欄位說明 →</button>
+  </div>
+</section>
+    <section id="bank-fields" class="section">
+  <div class="breadcrumb">銀行交易 › 每個欄位說明</div>
+  <h1>銀行交易——每個欄位說明</h1>
+  <div class="section-divider"></div>
+  <div class="field-row"><div class="field-name">transaction_date</div><div class="field-desc"><strong>交易日期</strong>——銀行交易的日期，格式 YYYY-MM-DD，如 2025-09-29。</div></div>
+  <div class="field-row"><div class="field-name">bank</div><div class="field-desc"><strong>銀行名稱</strong>——進行交易的銀行，如 BMO、TD。</div></div>
+  <div class="field-row"><div class="field-name">type</div><div class="field-desc"><strong>交易類型</strong>——<code>deposit</code>（存款：客戶付款入帳）或 <code>conversion</code>（換匯：美元換加元）。</div></div>
+  <div class="field-row"><div class="field-name">invoice_ref</div><div class="field-desc"><strong>對應發票</strong>——此次存款對應的發票編號，如 BQG-001，多張則填 BQG-001 &amp; BQG-002。換匯記錄可留空。</div></div>
+  <div class="field-row"><div class="field-name">amount_usd</div><div class="field-desc"><strong>美元金額</strong>——存款或換匯的美元金額，如 14599.60。</div></div>
+  <div class="field-row"><div class="field-name">amount_cad</div><div class="field-desc"><strong>加元金額</strong>——實際到帳的加元金額。存款（美元帳戶）填 0；換匯時填實際到帳金額，如 10310.16。</div></div>
+  <div class="field-row"><div class="field-name">actual_rate</div><div class="field-desc"><strong>實際匯率</strong>——銀行提供的換匯匯率，如 1.3566。存款記錄填 0。</div></div>
+  <div class="field-row"><div class="field-name">boc_rate</div><div class="field-desc"><strong>BOC匯率</strong>——加拿大銀行的官方匯率，如 1.3978。從系統設定中取得。</div></div>
+  <div class="field-row"><div class="field-name">boc_cad_equiv</div><div class="field-desc"><strong>BOC等值加元</strong>——按BOC匯率計算應得的加元金額（amount_usd × boc_rate）。系統自動計算。</div></div>
+  <div class="field-row"><div class="field-name">fx_gain_loss</div><div class="field-desc"><strong>外匯盈虧</strong>——實際到帳加元與BOC等值的差額。系統自動計算，正數為盈利，負數為虧損。</div></div>
+  <div class="field-row"><div class="field-name">notes</div><div class="field-desc"><strong>備註</strong>——可選填，如需說明特殊情況。</div></div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('bank-fields')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('bank-fields')">下一模組：⚡ 快速參考 →</button>
+  </div>
+</section>
+    <section id="ref-categories" class="section">
+  <div class="breadcrumb">快速參考 › 支出類別速查表</div>
+  <h1>支出類別速查表</h1>
+  <div class="section-divider"></div>
+  <p>輸入支出時的快速參考。
+    <button onclick="window.print()" style="margin-left:12px;background:var(--accent);color:white;border:none;padding:6px 14px;border-radius:4px;font-family:inherit;cursor:pointer;font-size:13px">🖨️ 列印此頁</button>
+  </p>
+  <table>
+    <tr><th>類別（Category）</th><th>T2125行號</th><th>常見支出例子</th><th>業務用途%</th></tr>
+    <tr><td><strong>Internet/Phone</strong></td><td>9220</td><td>家用寬頻費、手機月費</td><td>60%（或按實際）</td></tr>
+    <tr><td><strong>Office Supplies</strong></td><td>8810</td><td>文具、打印紙、墨盒、USB</td><td>100%</td></tr>
+    <tr><td><strong>Software/Subscription</strong></td><td>9220</td><td>Office 365、雲端服務、VPN、開發工具</td><td>100%</td></tr>
+    <tr><td><strong>Professional Fees</strong></td><td>8860</td><td>會計師費、法律費用、顧問費</td><td>100%</td></tr>
+    <tr><td><strong>Home Office</strong></td><td>9945</td><td>按辦公室佔家居面積比例的水電租金</td><td>視情況（如10%）</td></tr>
+    <tr><td><strong>Travel</strong></td><td>9281</td><td>工作相關交通費、停車費、的士</td><td>100%</td></tr>
+    <tr><td><strong>Bank Charges</strong></td><td>8710</td><td>銀行服務費、國際轉帳費、帳戶管理費</td><td>100%</td></tr>
+  </table>
+  <div class="callout warn">
+    <strong>⚠️ 有疑問時</strong>：在備註（notes）欄寫「待確認」，讓老公核實。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('ref-categories')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('ref-categories')">下一節：每月記帳清單 →</button>
+  </div>
+</section>
+    <section id="ref-checklist" class="section">
+  <div class="breadcrumb">快速參考 › 每月記帳清單</div>
+  <h1>每月記帳清單</h1>
+  <div class="section-divider"></div>
+  <p>在每月底或下月初，按以下清單逐項完成：</p>
+
+  <h3 style="margin:16px 0 10px;color:var(--sidebar-bg)">🧾 支出記錄</h3>
+  <div class="checklist-item"><div class="checklist-box"></div><div>收集當月所有收據（實體或電子）</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>為每張收據輸入一筆支出記錄</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>確認每張收據的類別和T2125行號正確</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>確認business_use_pct（業務用途百分比）正確填入</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>把收據存放安全（掃描或實體保存）</div></div>
+
+  <h3 style="margin:16px 0 10px;color:var(--sidebar-bg)">💰 發票記錄</h3>
+  <div class="checklist-item"><div class="checklist-box"></div><div>確認本月發票是否已由老公發出</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>輸入發票記錄，填入所有美元金額及BOC匯率</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>客戶付款後，更新發票狀態為 paid</div></div>
+
+  <h3 style="margin:16px 0 10px;color:var(--sidebar-bg)">🏦 銀行交易記錄</h3>
+  <div class="checklist-item"><div class="checklist-box"></div><div>查看銀行帳單，確認本月有沒有客戶付款入帳（deposit）</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>查看有沒有美元換加元的換匯記錄（conversion）</div></div>
+  <div class="checklist-item"><div class="checklist-box"></div><div>為每筆銀行交易輸入記錄</div></div>
+
+  <div class="callout info" style="margin-top:20px">
+    <strong>💡 完成後</strong><br>
+    通知老公本月記錄已完成，讓他審閱一遍，確保無誤。
+  </div>
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('ref-checklist')">← 上一節</button>
+    <button class="btn-next" onclick="nextSection('ref-checklist')">下一節：常見問題 →</button>
+  </div>
+</section>
+    <section id="ref-faq" class="section">
+  <div class="breadcrumb">快速參考 › 常見問題</div>
+  <h1>常見問題</h1>
+  <div class="section-divider"></div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: 我沒有保留收據，怎麼辦？</div>
+    <div class="faq-a">如果是信用卡或銀行轉帳，可以用帳單記錄代替。如果是現金支付且沒有收據，這筆支出可能無法扣稅。建議從今以後養成保存收據的習慣，無論是拍照還是保留實體。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: 我不確定某張收據的類別，怎麼辦？</div>
+    <div class="faq-a">先填入最接近的類別，然後在備註（notes）欄寫「待確認類別」，完成後通知老公核實。不要因為不確定就跳過不輸入。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: 收據上的金額包含HST，我應該填哪個金額？</div>
+    <div class="faq-a">在支出記錄（expenses）中，total_amount 填收據上的<strong>總金額</strong>（包含HST），不需要分拆。加拿大稅局允許申請退回部分HST，這個交由老公處理。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: BOC匯率我去哪裡找？</div>
+    <div class="faq-a">系統設定（settings）裡有當前的BOC匯率，老公會定期更新。如果你發現匯率看起來太舊，通知老公更新即可。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: 如果我輸入錯了，可以更改嗎？</div>
+    <div class="faq-a">可以。在系統中找到該記錄，直接修改即可。如果不確定怎麼操作，通知老公幫忙修改。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: 收據需要保留多久？</div>
+    <div class="faq-a">加拿大稅局要求保留<strong>至少6年</strong>的記帳記錄和相關收據（從報稅年度起計算）。建議掃描成電子文件並備份。</div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q">Q: 私人和工作費用混合付款（如用同一張信用卡），怎麼處理？</div>
+    <div class="faq-a">沒有問題。只需要在輸入時，把跟工作有關的支出記錄下來，私人消費的收據不需要輸入系統。</div>
+  </div>
+
+  <div class="nav-buttons">
+    <button class="btn-prev" onclick="prevSection('ref-faq')">← 上一節</button>
+  </div>
+</section>
+  </main>
+</div>
+
+<script>
+const SECTIONS = [
+  'basics-what','basics-why','basics-t2125','basics-role',
+  'income-what','income-hst','income-fx','income-fields',
+  'expense-deductible','expense-pct','expense-categories','expense-fields',
+  'bank-deposit','bank-conversion','bank-fields',
+  'ref-categories','ref-checklist','ref-faq'
+];
+
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.sidebar-link').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('onclick') === `showSection('${id}')`);
+  });
+  window.scrollTo(0, 0);
+}
+
+function nextSection(currentId) {
+  const idx = SECTIONS.indexOf(currentId);
+  if (idx < SECTIONS.length - 1) showSection(SECTIONS[idx + 1]);
+}
+
+function prevSection(currentId) {
+  const idx = SECTIONS.indexOf(currentId);
+  if (idx > 0) showSection(SECTIONS[idx - 1]);
+}
+
+showSection('basics-what');
+</script>
+</body>
+</html>
